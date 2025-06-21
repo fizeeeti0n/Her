@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>243❤️</title>
+    <style>
+        /* General styling for the page */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            overflow: hidden; /* Hide scrollbars to maintain floating effect */
+            position: relative;
+        }
+
+        /* Styles for the floating hearts background */
+        .hearts-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allows clicks to pass through to elements below */
+            z-index: 1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.1); /* Semi-transparent white hearts */
+            font-size: 20px;
+            animation: floatHeart 15s infinite linear; /* Animation for floating */
+        }
+
+        /* Keyframes for floating hearts animation */
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg); /* Start from bottom */
+                opacity: 0;
+            }
+            10% {
+                opacity: 1; /* Fade in */
+            }
+            90% {
+                opacity: 1; /* Stay opaque */
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg); /* Float off top, rotate */
+                opacity: 0; /* Fade out */
+            }
+        }
+
+        /* Styles for the main content container (this is largely for centering child elements) */
+        .container {
+            position: relative;
+            z-index: 2; /* Ensures content is above background hearts */
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Styles for the title section */
+        .title {
+            position: fixed; /* Keep it fixed relative to the viewport */
+            top: 50%;
+            right: 20px; /* Always on the extreme right */
+            transform: translateY(-50%); /* Vertically center */
+            text-align: right; /* Align text to the right within its container */
+            color: #8e2de2; /* Purple color for title */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            opacity: 0; /* Initially hidden, will fade in when heart is formed */
+            transition: opacity 2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth transition for visibility */
+            z-index: 1000; /* Ensure it's always on top of other content */
+        }
+
+        /* This class makes the title visible when the heart is formed */
+        .title.heart-formed {
+            opacity: 1;
+        }
+
+        .title h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .title p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Styles for the container wrapping the paragraph inside the title */
+        .title .text-container { /* Custom class for the text wrapper */
+            max-width: 350px; /* Adjusted max-width for readability on the right side */
+            margin-left: auto; /* Push to the right within the fixed .title container */
+            padding: 20px;
+            background:transparent; /* Slightly opaque white background */
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 4px 15px rgba(255, 254, 254, 0.1); /* Subtle shadow for depth */
+            text-align: left; /* Ensure text inside is right-aligned */
+        }
+
+        .title .text-container p {
+            color: #4a4a4a; /* Darker text for readability on light background */
+            line-height: 1.6;
+            font-size: 1.1rem; /* Slightly larger font for readability */
+        }
+
+
+        /* Styles for control buttons */
+        .controls {
+            position: fixed;
+            top: 20px;
+            left: 20px; /* Position controls to the left */
+            z-index: 1000;
+            display: flex;
+            gap: 15px;
+        }
+
+        .heart-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            background: linear-gradient(45deg, #e91e63, #f06292); /* Pink/purple gradient */
+            color: white;
+            font-size: 20px;
+        }
+
+        .heart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Styles for floating photos */
+        .photo-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100; /* Photos are below text and controls */
+        }
+
+        .floating-photo {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 3px solid white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth transition for photo movement */
+            animation: float 6s ease-in-out infinite; /* Animation for subtle photo floating */
+        }
+
+        /* Keyframes for subtle photo floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(2deg); }
+            50% { transform: translateY(-5px) rotate(-1deg); }
+            75% { transform: translateY(-15px) rotate(1deg); }
+        }
+
+        /* Styles for photo counter */
+        .photo-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: #8e2de2;
+            font-weight: bold;
+            z-index: 1000;
+        }
+
+        /* Styles for messages/notifications */
+        .message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: transparent;
+            padding: 15px 30px;
+            border-radius: 25px;
+            color: #8e2de2;
+            font-size: 18px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .message.show {
+            opacity: 1;
+        }
+
+        /* Heart shape positions */
+        .heart-formation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 350px;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-background" id="heartsBackground"></div>
+    
+    <div class="container">
+        <div class="title" id="mainTitle">
+            <h1 class="mb-4">8 Months of Love</h1>
+            <div class="text-container">
+                <p>It's been 8 months since we are together and I didn't give you anything or did anything which is memorable. As we speak it's been a long journey since we became friends to lovers. Tons of things happened. Everything will stay till the world dies. As I am making this for you, you are in a fight and you have blocked me from WhatsApp too. We grow for each other day by day and we will be growing till we can, Rutaiba. Everything around you, and I mean it, everything that comes from you is a blessing for me. Thanks for coming in my life. I Love You.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="heart-btn" onclick="formHeart()">
+            ❤️ Form Heart
+        </button>
+    </div>
+
+    <div class="photo-counter" id="photoCounter">
+        Photos: 0
+    </div>
+
+    <div class="photo-container" id="photoContainer"></div>
+
+    <div class="message" id="message">
+        <!-- Initial message will be set by JS -->
+    </div>
+
+    <script>
+        let photos = []; // Stores references to the created photo elements
+        let photoCount = 0;
+        let isHeartFormed = false;
+
+        // Function to create floating hearts in the background
+        function createFloatingHearts() {
+            const heartsContainer = document.getElementById('heartsBackground');
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart';
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animationDelay = Math.random() * 15 + 's';
+                    heartsContainer.appendChild(heart);
+                }, i * 1000);
+            }
+        }
+
+        // Function to create a floating photo element
+        function createFloatingPhoto(src) {
+            const photo = document.createElement('img');
+            photo.className = 'floating-photo';
+            photo.src = src;
+            
+            // Random starting position
+            photo.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+            photo.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+            
+            document.getElementById('photoContainer').appendChild(photo);
+            photos.push(photo); // Add to our photos array
+            photoCount++;
+            updatePhotoCounter(); // Update the photo count display
+            
+            // Apply random movement animation if heart is not yet formed
+            movePhotoRandomly(photo);
+        }
+
+        // Function for random photo movement when not in heart formation
+        function movePhotoRandomly(photo) {
+            // Only apply random movement if the heart is not formed
+            if (!isHeartFormed) {
+                // Use requestAnimationFrame for smoother animations
+                function animatePhoto() {
+                    if (!isHeartFormed) {
+                        const newX = Math.random() * (window.innerWidth - photo.offsetWidth);
+                        const newY = Math.random() * (window.innerHeight - photo.offsetHeight);
+                        photo.style.left = newX + 'px';
+                        photo.style.top = newY + 'px';
+                        // Use a longer transition duration for smoother random movement
+                        photo.style.transition = 'left 5s ease-in-out, top 5s ease-in-out';
+                        requestAnimationFrame(animatePhoto); // Continue animating
+                    } else {
+                        photo.style.transition = 'all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94)'; // Reset for heart formation
+                    }
+                }
+                // Start the initial animation after a short delay
+                setTimeout(() => requestAnimationFrame(animatePhoto), Math.random() * 3000);
+            }
+        }
+
+
+        // Function to form photos into a heart shape
+        function formHeart() {
+            if (photos.length === 0) {
+                showMessage("No photos loaded yet! Please check your photo setup.");
+                return;
+            }
+
+            // Prevent re-forming if already formed
+            if (isHeartFormed) {
+                showMessage("Heart already formed! Reset the page to re-shuffle.");
+                return;
+            }
+
+            isHeartFormed = true;
+            
+            // Add 'heart-formed' class to mainTitle to make it visible
+            const title = document.getElementById('mainTitle');
+            title.classList.add('heart-formed');
+            
+            // Mathematical heart curve calculations
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const scale = Math.min(window.innerWidth, window.innerHeight) / (photos.length > 50 ? 80 : 50); // Adjust scale based on screen size and photo count
+            
+            // Calculate positions for each photo along the heart curve
+            photos.forEach((photo, index) => {
+                const t = (index / photos.length) * 2 * Math.PI; // Parameter t from 0 to 2*PI
+                const x = centerX + scale * (16 * Math.pow(Math.sin(t), 3));
+                const y = centerY - scale * (13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+                
+                // Set photo position with offset for centering
+                photo.style.left = (x - photo.offsetWidth / 2) + 'px';
+                photo.style.top = (y - photo.offsetHeight / 2) + 'px';
+                photo.style.transform = 'scale(1.2)'; // Slightly enlarge photos in heart
+                photo.style.zIndex = '200'; // Bring photos to front
+                photo.style.animation = 'none'; // Stop random floating animation
+            });
+
+            // Create and display the heart outline glow after photos are positioned
+            setTimeout(() => {
+                createHeartGlow();
+                // Ensure the final message is shown after the glow effect starts
+                showMessage("💕 Our memories shaped into love! Happy 8 months anniversary! 💕");
+            }, 2000); // Give time for photos to move
+        }
+
+        // Function to create an SVG heart outline glow around the formed photos
+        function createHeartGlow() {
+            // Remove any existing glow to prevent duplicates
+            const existingGlow = document.getElementById('heartGlow');
+            if (existingGlow) {
+                existingGlow.remove();
+            }
+
+            const heartGlow = document.createElement('div');
+            heartGlow.id = 'heartGlow';
+            heartGlow.style.position = 'fixed';
+            heartGlow.style.top = '0';
+            heartGlow.style.left = '0';
+            heartGlow.style.width = '100%';
+            heartGlow.style.height = '100%';
+            heartGlow.style.pointerEvents = 'none';
+            heartGlow.style.zIndex = '201'; // Z-index higher than photos (200) to appear on top
+            
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.style.width = '100%';
+            svg.style.height = '100%';
+            svg.style.position = 'absolute';
+            svg.style.top = '0';
+            svg.style.left = '0';
+            
+            // Define SVG filter for glow effect
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            const filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+            filter.setAttribute('id', 'heartGlowFilter');
+            
+            // Increase stdDeviation for a more prominent glow
+            const blur = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
+            blur.setAttribute('stdDeviation', '10'); // Increased blur for more glow
+            blur.setAttribute('result', 'coloredBlur');
+            
+            const merge = document.createElementNS('http://www.w3.org/2000/svg', 'feMerge');
+            const mergeNode1 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+            mergeNode1.setAttribute('in', 'coloredBlur');
+            const mergeNode2 = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+            mergeNode2.setAttribute('in', 'SourceGraphic'); // Keep original for sharpness
+            
+            merge.appendChild(mergeNode1);
+            merge.appendChild(mergeNode2);
+            filter.appendChild(blur);
+            filter.appendChild(merge);
+            defs.appendChild(filter);
+            svg.appendChild(defs);
+            
+            // Create the path data connecting the photo centers to form the heart outline
+            let pathData = '';
+            if (photos.length > 0) {
+                // To get a smoother heart, we can't just connect random points.
+                // We'll reuse the mathematical heart curve to draw the outline.
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                const scale = Math.min(window.innerWidth, window.innerHeight) / (photos.length > 50 ? 80 : 50); // Use same scale as photos
+                const numPoints = 100; // More points for a smoother curve
+                
+                for (let i = 0; i <= numPoints; i++) {
+                    const t = (i / numPoints) * 2 * Math.PI;
+                    const x = centerX + scale * (16 * Math.pow(Math.sin(t), 3));
+                    const y = centerY - scale * (13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+                    
+                    if (i === 0) {
+                        pathData += `M ${x} ${y}`;
+                    } else {
+                        pathData += ` L ${x} ${y}`;
+                    }
+                }
+                pathData += ' Z'; // Close the path
+            }
+            
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', pathData);
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke', '#ff1744'); // Red stroke for the heart outline
+            path.setAttribute('stroke-width', '3');
+            path.setAttribute('filter', 'url(#heartGlowFilter)'); // Apply the glow filter
+            path.setAttribute('opacity', '0.9');
+            
+            // Add pulsing animation to the heart outline
+            const animate1 = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+            animate1.setAttribute('attributeName', 'stroke-width');
+            animate1.setAttribute('values', '3;6;3');
+            animate1.setAttribute('dur', '2s');
+            animate1.setAttribute('repeatCount', 'indefinite');
+            
+            const animate2 = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+            animate2.setAttribute('attributeName', 'opacity');
+            animate2.setAttribute('values', '0.9;1;0.9');
+            animate2.setAttribute('dur', '2s');
+            animate2.setAttribute('repeatCount', 'indefinite');
+            
+            path.appendChild(animate1);
+            path.appendChild(animate2);
+            svg.appendChild(path);
+            heartGlow.appendChild(svg);
+            
+            document.body.appendChild(heartGlow); // Add the glow SVG to the body
+        }
+
+        // Function to update the displayed photo counter
+        function updatePhotoCounter() {
+            document.getElementById('photoCounter').textContent = `Photos: ${photoCount}`;
+        }
+
+        // Function to show a temporary message/notification
+        function showMessage(text) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.classList.add('show');
+            // Hide message after 4 seconds
+            setTimeout(() => {
+                message.classList.remove('show');
+            }, 4000);
+        }
+
+        // Add sparkle animation CSS (This block should ideally be in the <style> tag directly or a separate CSS file)
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes heartGlow {
+                0% {
+                    box-shadow: 0 0 20px #ff1744, 0 0 40px #ff1744, 0 0 60px #ff1744;
+                    filter: brightness(1);
+                }
+                100% {
+                    box-shadow: 0 0 40px #ff1744, 0 0 80px #ff1744, 0 0 120px #ff1744, 0 0 160px #ff1744;
+                    filter: brightness(1.3);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Define your sample photos. Using Picsum.photos as provided.
+        const samplePhotos = [
+            '/photos/photo1.jpg', // Ensure these paths are correct relative to your server setup
+            '/photos/photo2.jpg',
+            '/photos/photo3.jpg',
+            '/photos/photo4.jpg',
+            '/photos/photo5.jpg',
+            '/photos/photo6.jpg',
+            '/photos/photo7.jpg',
+            '/photos/photo8.jpg',
+            '/photos/photo9.jpg',
+            '/photos/photo10.jpg',
+            '/photos/photo11.jpg',
+            '/photos/photo12.jpg',
+            '/photos/photo13.jpg',
+            '/photos/photo14.jpg',
+            '/photos/photo15.jpg',
+            '/photos/photo16.jpg',
+            '/photos/photo17.jpg',
+            '/photos/photo18.jpg',
+            '/photos/photo19.jpg',
+            '/photos/photo20.jpg'  // Corrected a potential typo: photo18.jpg repeated twice, assuming photo19.jpg
+            
+        ];
+
+        // Function to automatically load sample photos when the page loads
+        function loadSamplePhotosAutomatically() {
+            if (samplePhotos.length === 0) {
+                showMessage("No sample photos defined. Please add images to the 'samplePhotos' array.");
+                return;
+            }
+            samplePhotos.forEach((photoUrl, index) => {
+                setTimeout(() => {
+                    createFloatingPhoto(photoUrl);
+                }, index * 200); // Stagger the loading slightly for a nicer effect
+            });
+            showMessage("Memories are floating around! Click the ❤️ to see a magic!");
+        }
+
+        // Initialize the app when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            createFloatingHearts(); // Start background hearts
+            loadSamplePhotosAutomatically(); // Automatically load photos
+        });
+    </script>
+</body>
+</html>
